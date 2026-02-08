@@ -21,6 +21,21 @@ body{
   overflow:hidden;
   color:#fff;
 }
+  b{
+color: #ffffff;
+  font-family: sans-serif;
+ /* font-size: 40px;*/
+
+  font-weight: bold;
+  /*background-color: #1a1a1a;  Dark background is a must for the glow to show! */
+ /* padding: 20px; */ 
+  text-align: center;
+text-shadow: 
+    0 0 5px #fff,
+    0 0 10px #fff,
+    0 0 20px #fff,
+    0 0 40px #00d4ff;
+}
 
 /* 🌹 Falling Petals */
 .petal{
@@ -292,16 +307,25 @@ const gifs = {
 };
 
 const cards=[
- {t:"Happy Valentine’s, Harsh", m:"The Mona Lisa would still be the greatest art… if your smile didn’t exist ❤️", g: gifs.intro},
- {t:"🌹 Rose Day", m:"Every rose have <b>Thorns</b>, show me yours and ill show you the hand willing to bleed ", g: gifs.rose},
- {t:"💍 Propose Day", m:"I found my peace the moment I found you. Now, I want to make sure I never have to look for it again. Will you do me the honor of spending forever with me?", g: gifs.propose},
- {t:"🍫 Chocolate Day", m:"You melt my stress away just like chocolate. I hope I can be your choclate one day, just as you are mine." ,g: gifs.food},
- {t:"🧸 Teddy Day", m:"I want to be the comfort you hold onto every night", g: gifs.teddy},
- {t:"🤞 Promise Day", m:"I promise you that ill do my best to understand you ,to love you and only you in every universe.", g: gifs.promise},
- {t:"🤗 Hug Day", m:"I want to be the person whose hug gives you sakoon from all your problems, because you are that person for me", g: gifs.hug},
- {t:"💋 Kiss Day", m:"Your presence leaves warmth in my heart all day", g: gifs.kiss},
- {t:"❤️ Valentine’s Day", m:"You are my today, my tomorrow, and my forever ❤️", g: gifs.valentine}
+ {t:"Happy Valentine’s, Lipsy", m:"Even the most famous paintings would fade, because nothing holds my attention like your <b>eyes</b> and your <b>smile</b> ❤️", g: gifs.intro},
+
+ {t:"🌹 Rose Day", m:"Every rose comes with <b>thorns</b>, but I’d still choose it every time—because <b>loving you</b> is worth every prick", g: gifs.rose},
+
+ {t:"💍 Propose Day", m:"I don’t want perfect days, I want <b>real days</b>—as long as they’re all spent <b>with you</b>. Will you be mine forever?", g: gifs.propose},
+
+ {t:"🍫 Chocolate Day", m:"Life feels sweeter when you’re around. One smile from you, and my heart <b>melts</b> instantly 🍫", g: gifs.food},
+
+ {t:"🧸 Teddy Day", m:"I don’t need a teddy when I have <b>you</b>—my safest place, my <b>comfort</b>", g: gifs.teddy},
+
+ {t:"🤞 Promise Day", m:"I promise to choose <b>you</b> on easy days and harder ones, in this life and in <b>every version</b> of it", g: gifs.promise},
+
+ {t:"🤗 Hug Day", m:"If the world gets too loud, come to me—my hug is where you’ll find <b>peace</b>", g: gifs.hug},
+
+ {t:"💋 Kiss Day", m:"One kiss from you has the power to <b>slow time</b> and calm my entire soul", g: gifs.kiss},
+
+ {t:"❤️ Valentine’s Day", m:"If love could speak today, it would ask you one thing—<b>what do you feel?</b>", g: gifs.valentine}
 ];
+
 
 let index=0,startX=0;
 const card=document.getElementById("card");
@@ -320,6 +344,37 @@ function createHeartPop() {
     setTimeout(()=>heart.remove(), 1500);
   }
 }
+function typeText(el, html, speed = 60) {
+  el.innerHTML = "";
+  let i = 0;
+  let isTag = false;
+  let text = "";
+
+  function type() {
+    if (i < html.length) {
+      const char = html[i];
+
+      // detect HTML tags
+      if (char === "<") isTag = true;
+
+      if (!isTag) {
+        text += char;
+        el.innerHTML = text;
+      } else {
+        text += char;
+      }
+
+      if (char === ">") {
+        isTag = false;
+        el.innerHTML = text;
+      }
+
+      i++;
+      setTimeout(type, isTag ? 0 : speed);
+    }
+  }
+  type();
+}
 
 function render(){
   const c=cards[index];
@@ -329,9 +384,11 @@ function render(){
     html = `<div class="ring-container"><div class="ring"></div></div>` + html;
   }
   
-  html+=`<h1>${c.t}</h1><p>${c.m}</p>`;
-  
-  card.innerHTML=html;
+  html += `<h1>${c.t}</h1><p id="msg"></p>`;
+
+  card.innerHTML = html;
+   // 👇 typing effect here
+  typeText(document.getElementById("msg"), c.m, 45);
   dots.innerHTML=cards.map((_,i)=>`<div class="dot ${i===index?'active':''}"></div>`).join("");
 }
 
